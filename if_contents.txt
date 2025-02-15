@@ -1,5 +1,4 @@
 $request->user()->canFollow($user)
 $user
+isset($user[1])
 isset($user)
-$request->user()->canUnFollow($user)
-file_exists($maintenance=__DIR__.'/../storage/framework/maintenance.php')

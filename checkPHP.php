@@ -20,7 +20,8 @@ function isParsable($code) {
     try {
         // Wrap in PHP tags to make it a valid PHP snippet
         $wrappedCode = "<?php " . $code . ";";
-        \ast\parse_code($wrappedCode, 80);
+        $ast = \ast\parse_code($wrappedCode, 80);
+        print_r($ast);
         return true; // No syntax errors
     } catch (ParseError $e) {
         return false; // Syntax error detected
