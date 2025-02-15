@@ -1,0 +1,9 @@
+(base) yano@yanonoMacBook-Pro reactAndLaravel % chmod +x checkif.sh       
+(base) yano@yanonoMacBook-Pro reactAndLaravel % ./checkif.sh ./backend
+Done! Check 'if_statements.txt' for results.
+(base) yano@yanonoMacBook-Pro reactAndLaravel % ./checkif.sh ./backend
+Done! Check 'if_statements.txt' for results.
+(base) yano@yanonoMacBook-Pro reactAndLaravel % ./checkif.sh ./backend
+Done! Check 'if_statements.txt' for results.
+(base) yano@yanonoMacBook-Pro reactAndLaravel % ./checkif.sh ./backend
+Done! Check 'if_statements.txt' for results.
