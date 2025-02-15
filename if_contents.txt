@@ -1,4 +1,6 @@
 $request->user()->canFollow($user)
 $user
-isset($user[1])
+$user[1]
+$user[1][2] && $user[3][$last]
+$user[$no]
 isset($user)
