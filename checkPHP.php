@@ -34,6 +34,7 @@ function isParsable($code) {
 }
 
 function switchTreeStructure($node) {
+    var_dump($node);
     if (isArrayAccess($node)) {
         echo "isArray\n";
         // Modify for array access
