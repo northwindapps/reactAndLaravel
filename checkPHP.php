@@ -82,7 +82,7 @@ function applyRule($node) {
             array_push($test, $node->children[0]->children['dim']->children['name']);
         }
         
-        return $issetNode;
+        return ;
     }
 
     return $node;
