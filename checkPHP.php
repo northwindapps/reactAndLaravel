@@ -77,25 +77,6 @@ function traverseAndApplyRules($node) {
     return $node;
 }
 
-function extractArrayAccess($node, &$result = []) {
-    if (!$node instanceof ast\Node) {
-        return $result; // Prevent errors by skipping null or non-node values
-    }
-    if ($node->kind === 512 && isset($node->children['expr'])) { // 512 is AST_ARRAY_ACCESS
-        extractArrayAccess($node->children['expr'], $result);
-    }
-
-    if ($node->kind === 256 && isset($node->children['name'])) { // 256 is AST_VAR
-        $result[] = $node->children['name'];
-    }
-
-    if (isset($node->children['dim'])) {
-        $result[] = (string) $node->children['dim']; // Convert int to string
-    }
-
-    return $result;
-}
-
 function applyRule($node) {
     global $test;
     if (isArrayAccess($node)) {
