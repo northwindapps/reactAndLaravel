@@ -2,6 +2,7 @@
 // Define the file path
 $filePath = "./if_contents.txt"; // Change this to your actual file
 $test = array();
+$localDims = array();
 
 // Check if the file exists
 if (!file_exists($filePath)) {
@@ -45,11 +46,19 @@ function switchTreeStructure($node) {
 
 function traverseAndApplyRules($node) {
     global $test;
+    global $localDims;
     // Check if the node is a variable
     if (isVariable($node)) {
+        if (isset($node->children['dim']) && !is_object($node->children['dim'])){
+            // echo "Dim found: " . (String)$node->children['dim'] . "\n";
+            array_push($localDims, (String)$node->children['dim']);
+        }
+
         if (isset($node->children['name'])){
             echo "Variable found: " . $node->children['name'] . "\n";
             array_push($test, $node->children['name']);
+            $test = array_merge($test, array_reverse($localDims));
+            $localDims = array();
             return $node;
         }
     }
@@ -65,6 +74,25 @@ function traverseAndApplyRules($node) {
     }
 
     return $node;
+}
+
+function extractArrayAccess($node, &$result = []) {
+    if (!$node instanceof ast\Node) {
+        return $result; // Prevent errors by skipping null or non-node values
+    }
+    if ($node->kind === 512 && isset($node->children['expr'])) { // 512 is AST_ARRAY_ACCESS
+        extractArrayAccess($node->children['expr'], $result);
+    }
+
+    if ($node->kind === 256 && isset($node->children['name'])) { // 256 is AST_VAR
+        $result[] = $node->children['name'];
+    }
+
+    if (isset($node->children['dim'])) {
+        $result[] = (string) $node->children['dim']; // Convert int to string
+    }
+
+    return $result;
 }
 
 function applyRule($node) {
