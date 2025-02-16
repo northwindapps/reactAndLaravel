@@ -33,6 +33,7 @@ function isParsable($code) {
 }
 
 function traverseAndApplyRules($node) {
+    // var_dump($node);
     global $test;
     global $localDims;
     // Check if the node is a variable
@@ -41,10 +42,18 @@ function traverseAndApplyRules($node) {
             // echo "Dim found: " . (String)$node->children['dim'] . "\n";
             array_push($localDims, (String)$node->children['dim']);
         }
+        if (isset($node->children['dim']) && is_object($node->children['dim'])){
+            if(isset($node->children['dim']->children['name'])){
+                // echo "Dim found: " . (String)$node->children['dim']->children['name'] . "\n";
+                array_push($localDims, (String)$node->children['dim']->children['name'] );
+            }
+        }
 
         if (isset($node->children['name'])){
-            echo "Variable found: " . $node->children['name'] . "\n";
+            // echo "Variable found: " . $node->children['name'] . "\n";
+            array_push($test, "v");
             array_push($test, $node->children['name']);
+            // array_push($test, "d");
             $test = array_merge($test, array_reverse($localDims));
             $localDims = array();
             return $node;
@@ -68,14 +77,17 @@ function applyRule($node) {
     global $test;
     if (isArrayAccess($node)) {
         if(isset($node->children[0]->children['expr']->children['name'])){
+            array_push($test, "v");
             array_push($test, $node->children[0]->children['expr']->children['name']);
         }
        
         if(!is_object($node->children[0]->children['dim'])){
+            // array_push($test, "d");
             array_push($test, (string) $node->children[0]->children['dim']);
         }
        
         if(isset($node->children[0]->children['dim']->children['name'])){
+            // array_push($test, "d");
             array_push($test, $node->children[0]->children['dim']->children['name']);
         }
         
