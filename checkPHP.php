@@ -25,24 +25,11 @@ function isParsable($code) {
         $ast = \ast\parse_code($wrappedCode, 80);
         $modifiedAst = traverseAndApplyRules($ast);
         // Print the modified AST (optional)
-        switchTreeStructure($modifiedAst);
 
         return true; // No syntax errors
     } catch (ParseError $e) {
         return false; // Syntax error detected
     }
-}
-
-function switchTreeStructure($node) {
-    var_dump($node);
-    if (isArrayAccess($node)) {
-        echo "isArray\n";
-        // Modify for array access
-        return applyIssetRule($node);  // Wrap in isset check
-    } else if (isVariable($node)) {
-        echo "isVariable\n";
-    }
-    return $node;
 }
 
 function traverseAndApplyRules($node) {
