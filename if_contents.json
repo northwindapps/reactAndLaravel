@@ -1,7 +1,7 @@
 [
   {"file":"./backend/app/Http/Controllers/UserController.php","condition":"","line":"25","array_variables":""},
   {"file":"./backend/app/Http/Controllers/UserController.php","condition":"","line":"28","array_variables":""},
-  {"file":"./backend/app/Http/Controllers/UserController.php","condition":"$user[1]","line":"31","array_variables":"$user[1]"},
+  {"file":"./backend/app/Http/Controllers/UserController.php","condition":"$user[1] $user[1]","line":"31","array_variables":"$user[1] $user[1]"},
   {"file":"./backend/app/Http/Controllers/UserController.php","condition":"","line":"34","array_variables":""},
   {"file":"./backend/app/Http/Controllers/UserController.php","condition":"","line":"42","array_variables":""},
   {"file":"./backend/public/index.php","condition":"","line":"8","array_variables":""}
