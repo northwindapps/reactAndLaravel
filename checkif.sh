@@ -40,7 +40,7 @@ find "$TARGET_DIR" -type f | while read -r file; do
         condition=$(echo "$if_statement" | sed -E 's/^[[:space:]]*if[[:space:]]*\(?(.*)\)?[[:space:]]*{/\1/')
 
         # Use grep to find array variables (e.g., $user[1])
-        array_variables=$(echo "$condition" | grep -oE '\$[a-zA-Z_][a-zA-Z0-9_]*\[[0-9]+\]' | tr '\n' ' && ')
+        array_variables=$(echo "$condition" | grep -oE '\$[a-zA-Z_][a-zA-Z0-9_]*\[[0-9]+\]' | tr '\n' ' ')
         array_variables=$(echo "$array_variables" | sed 's/[[:space:]]*$//')  # Trim spaces
 
         # Output the JSON object for each 'if' statement with extracted array variables

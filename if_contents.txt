@@ -1,6 +1,7 @@
-$request->user()->canFollow($user){
-$user{
-isset($user[1]) && $user[1]{
-isset($user){
-$request->user()->canUnFollow($user){
-file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'){
+$request->user()->canFollow($user)
+$user
+isset($user[1]) && $user[1] && $user[2]
+isset($user[2]) && $user[2]
+isset($user)
+$request->user()->canUnFollow($user)
+file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')
