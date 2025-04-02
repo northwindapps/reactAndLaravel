@@ -7,11 +7,13 @@ TARGET_DIR="${1:-.}"
 OUTPUT_FILE="if_statements.txt"
 OUTPUT_CONTENT_FILE="if_contents.txt"
 OUTPUT_CONTENT_ARRAY_VAR_FILE="if_contents_arrayvar.txt"
+OUTPUT_CONTENT_JSON_FILE="if_contents.json"
 
 # Clear output files if they already exist
 > "$OUTPUT_FILE"
 > "$OUTPUT_CONTENT_FILE"
 > "$OUTPUT_CONTENT_ARRAY_VAR_FILE"
+> "$OUTPUT_CONTENT_JSON_FILE"
 
 # Find all files recursively and check for 'if' statements
 find "$TARGET_DIR" -type f | while read -r file; do
@@ -27,23 +29,34 @@ done
 # Extract array-like variables from the conditions
 grep -oE '\$[a-zA-Z_][a-zA-Z0-9_]*\[[0-9]+\]' "$OUTPUT_CONTENT_FILE" >> "$OUTPUT_CONTENT_ARRAY_VAR_FILE"
 
+# Initialize the JSON array
+echo "[" > $OUTPUT_CONTENT_JSON_FILE
+
 # Find all files recursively and check for 'if' statements
-# find "$TARGET_DIR" -type f | while read -r file; do
-#     # Search for 'if' statements in the file and print file path + line number
-#     grep -Eni '^\s*if\s*\(?.*\)?\s*{' "$file" | while read -r line; do
-#         line_number=$(echo "$line" | cut -d: -f1)
-#         if_statement=$(echo "$line" | cut -d: -f2-)
+find "$TARGET_DIR" -type f | while read -r file; do
+    # Search for 'if' statements in the file and print file path + line number
+    grep -Eni '^\s*if\s*\(?.*\)?\s*{' "$file" | while read -r line; do
+        line_number=$(echo "$line" | cut -d: -f1)
+        if_statement=$(echo "$line" | cut -d: -f2-)
 
-#         # Save full 'if' statement with file path & line number
-#         echo "$file:$line_number: $if_statement" >> "$OUTPUT_FILE"
+        # Extract and save only the conditions inside the 'if' statements
+        condition=$(echo "$if_statement" | sed -E 's/^[[:space:]]*if[[:space:]]*\(?(.*)\)?[[:space:]]*{/\1/')
 
-#         # Extract and save only the conditions inside the 'if' statements
-#         condition=$(echo "$if_statement" | sed -E 's/^[[:space:]]*if[[:space:]]*\(?(.*)\)?[[:space:]]*{/\1/')
-#         echo "$file:$line_number: $condition" >> "$OUTPUT_CONTENT_FILE"
-#     done
-# done
+        # Use grep to find array variables (e.g., $user[1])
+        array_variables=$(echo "$condition" | grep -oE '\$[a-zA-Z_][a-zA-Z0-9_]*\[[0-9]+\]')
+
+        # Output the JSON object for each 'if' statement with extracted array variables
+        echo "  {\"file\":\"$file\",\"condition\":\"$array_variables\",\"line\":\"$line_number\",\"array_variables\":\"$array_variables\"}," >> $OUTPUT_CONTENT_JSON_FILE
+    done
+done
+
+# Close the JSON array (remove trailing comma and append closing bracket)
+sed -i '' -e '$ s/,$//' $OUTPUT_CONTENT_JSON_FILE  # Remove trailing comma from the last JSON object
+echo "]" >> $OUTPUT_CONTENT_JSON_FILE  # Close the JSON array
 
 # Run PHP script to classify variables
 php -f classify_variables.php < "$OUTPUT_CONTENT_ARRAY_VAR_FILE"
+
+# replace array variables with isset wrapped one here
 
 echo "Done! Check '$OUTPUT_FILE' for full if-statements and '$OUTPUT_CONTENT_FILE' for extracted conditions."

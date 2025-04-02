@@ -14,8 +14,8 @@ while (($line = fgets(STDIN)) !== false) {
 
     // Skip garbage lines
     if (!isValidVariable($var)) {
-        echo "$var: Invalid Variable\n";
-        continue;
+        fwrite(STDERR, "Error: Invalid variable detected -> $var\n");
+        exit(1); // Stop process with a non-zero exit code
     }
 
     if (isSingleVariable($var)) {
