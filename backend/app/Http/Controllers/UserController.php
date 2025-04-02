@@ -28,7 +28,7 @@ class UserController extends Controller
         if($user){
 
         }
-        if($user[1]){
+        if(isset($user[1]) && $user[1]){
 
         }
         if(isset($user)){

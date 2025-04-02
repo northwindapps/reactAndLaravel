@@ -54,9 +54,8 @@ done
 sed -i '' -e '$ s/,$//' $OUTPUT_CONTENT_JSON_FILE  # Remove trailing comma from the last JSON object
 echo "]" >> $OUTPUT_CONTENT_JSON_FILE  # Close the JSON array
 
-# Run PHP script to classify variables
-php -f classify_variables.php < "$OUTPUT_CONTENT_ARRAY_VAR_FILE"
+# Run the PHP script and pass the JSON file as an argument
+php process_json.php "$OUTPUT_CONTENT_JSON_FILE"
 
-# replace array variables with isset wrapped one here
 
-echo "Done! Check '$OUTPUT_FILE' for full if-statements and '$OUTPUT_CONTENT_FILE' for extracted conditions."
+# echo "Done! Check '$OUTPUT_FILE' for full if-statements and '$OUTPUT_CONTENT_FILE' for extracted conditions."
